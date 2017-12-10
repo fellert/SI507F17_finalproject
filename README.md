@@ -9,25 +9,25 @@ each site for the following data:
 
 Website    | Data
 ---------- | -------------
-Bloomberg  | basic information (company name, price, trading volume, dividend yield)
+Bloomberg  | Basic information (company name, price, trading volume, dividend yield)
 CNN Money  | 12-month price targets (median, high, low)
 Reuters    | Analyst ratings (buy, outperform, hold, underperform, sell, no opinion)
 
 ## Overview of Files
 
-* SI507F17_finalproject.py
+* **SI507F17_finalproject.py**
   * Contains the code that runs the program loop to make the url requests, construct the Stock() object,
     and build a dictionary entry to be added to the cache (if needed) for a user-entered ticker
-* SI507F17_finalproject_tests.py
+* **SI507F17_finalproject_tests.py**
   * Contains three classes and 16 methods that test the functions, caching, databases, and edge cases
-* visualize.py
+    (i.e. if a ticker does not exist or if some information like the analyst ratings are unavailable)
+* **visualize.py**
   * Contains code to construct two plotly bar graph, as well as the additional formatting dictionary
     (to change colors, add labels/titles, etc.)
-* database.py
-  * Contains three functions
-    * one that builds the database tables the first time the program is run,
-    * one that inserts a stock's information the first time it is sentiment
-    * one that updated a stock's information if the cache timestamp has expired 
+* **database.py**
+  * Contains three functions - one that builds the database tables the first time the program is run,
+    one that inserts a stock's information the first time it is sentiment, one that updated a stock's
+    information if the cache timestamp has expired
 
 ## Installation/Requirements
 
@@ -35,7 +35,9 @@ Run pip install requirements.txt to install the required python packages, includ
 Requests, BeautifulSoup, psycopg2, urllib3, and Plotly. Other imported packages include
 unittest and JSON. Plotly has both online (using and API) and offline modes - this program
 uses the plotly.offline.plot to create graphs of stock data that will open in the
-user's browser as localhost. In addition, all files are written to run using python3.6
+user's browser as localhost. In addition, all files are written to run using python3.6.
+
+A PostgreSQL **database named FELLERT_SI507FINAL** will also need to be created.
 
 To run the program after installing the required packages, simply type *python3 SI507F17_finalproject.py*
 from the command line. You may also run the testing file as *python3 SI507F17_finalproject_tests.py*
