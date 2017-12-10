@@ -45,7 +45,7 @@ database.py file to connect and insert information.
 To run the program after installing the required packages, simply type *python3 SI507F17_finalproject.py*
 from the command line. You may also run the testing file as *python3 SI507F17_finalproject_tests.py*
 
-# Running the Program
+## Running the Program
 
 The program initially tries to open the "data.json" cache file, and when this fails (as it is not included)
 it will create the file and run a loop creating url requests, a Stock() object, and inserting information
@@ -62,3 +62,12 @@ approximate annual dividend payout, and consensus analyst rating (i.e buy, sell,
 prompted as to whether they would like a plotly graph to generate a html file and automatically open it in their
 browser or if they would just like to save the file to the directory. After this, the user can either exit the
 program or choose to enter another stock ticker.
+
+## Additional Links
+
+* Example CNN Money request: http://money.cnn.com/quote/quote.html?symb=AAPL
+* Example Bloomberg request: https://www.bloomberg.com/quote/AAPL:US
+* Example Reuters request: https://www.reuters.com/finance/stocks/overview/AAPL.OQ
+
+* Plotly guide on bar charts: https://plot.ly/python/bar-charts/
+* Plotly guide for subplots (graphing to charts on one page): https://plot.ly/python/subplots/
