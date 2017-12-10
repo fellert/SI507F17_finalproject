@@ -7,21 +7,27 @@ and look up basic information about the stock. This is done by making BeautifulS
 objects out of three URL requests to Bloomberg, CNN Money, and Reuters, and scraping
 each site for the following data:
 
-* Bloomberg - basin info (Price, name, trading volume)
-* CNN - price targets (high, median, low)</li>
-* Reuters - Analyst ratings (i.e. Buy, Sell, Hold, etc.)
+Website    | Data
+---------- | -------------
+Bloomberg  | basic information (company name, price, trading volume, dividend yield)
+CNN Money  | 12-month price targets (median, high, low)
+Reuters    | Analyst ratings (buy, outperform, hold, underperform, sell, no opinion)
 
 ## Overview of Files
 
-
-File                            | Contents
-------------------------------- | -------------
-SI507F17_finalproject.py        | Contains all of the primary code.
-SI507F17_finalproject_tests.py  | Three classes and 16 methods that test the request,
-                                | caching, Stock() object class, and database functions.
-visualize.py                    |
-database.py                     |
-
+* SI507F17_finalproject.py
+  * Contains the code that runs the program loop to make the url requests, construct the Stock() object,
+    and build a dictionary entry to be added to the cache (if needed) for a user-entered ticker
+* SI507F17_finalproject_tests.py
+  * Contains three classes and 16 methods that test the functions, caching, databases, and edge cases
+* visualize.py
+  * Contains code to construct two plotly bar graph, as well as the additional formatting dictionary
+    (to change colors, add labels/titles, etc.)
+* database.py
+  * Contains three functions
+    * one that builds the database tables the first time the program is run,
+    * one that inserts a stock's information the first time it is sentiment
+    * one that updated a stock's information if the cache timestamp has expired 
 
 ## Installation/Requirements
 
