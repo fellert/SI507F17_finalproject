@@ -11,6 +11,15 @@ each site for the following data:
 * CNN - price targets (high, median, low)</li>
 * Reuters - Analyst ratings (i.e. Buy, Sell, Hold, etc.)
 
+## Overview of Files
+
+
+File                            | Contents
+-------------                   | -------------
+SI507F17_finalproject.py        | Content Cell
+SI507F17_finalproject_tests.py  | Content Cell
+visualize.py                    |
+database.py                     |
 
 
 ## Installation/Requirements
@@ -19,7 +28,7 @@ Run pip install requirements.txt to install the required python packages, includ
 Requests, BeautifulSoup, psycopg2, urllib3, and Plotly. Other imported packages include
 unittest and JSON. Plotly has both online (using and API) and offline modes - this program
 uses the plotly.offline.plot to create graphs of stock data that will open in the
-user's browser as localhost. In addition, all files are written to run using python3.6 
+user's browser as localhost. In addition, all files are written to run using python3.6
 
 To run the program after installing the required packages, simply type *python3 SI507F17_finalproject.py*
 from the command line. You may also run the testing file as *python3 SI507F17_finalproject_tests.py*
