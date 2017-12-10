@@ -1,7 +1,5 @@
-import sys
 import json
 import requests
-from config import *
 from bs4 import BeautifulSoup
 from datetime import datetime
 from database import *
@@ -20,24 +18,39 @@ class Stock(object):
         self.volume = self.dict['volume']
         self.ratings = self.dict['ratings']
         self.mean = self.dict['mean rating']
+        self.dividend = self.dict['dividend']
 
     def __repr__(self):
         return "The most recent price for {} is ${}".format(self.name,self.price)
 
-    # CONVERTS MEAN RATING INTO A SENTIMENT, CHECKS IF THIS IS EQUAL TO THE ONE
+    # CONVERTS MEAN RATING (SELF.MEAN) INTO A SENTIMENT, CHECKS IF THIS IS EQUAL TO THE ONE
     # THE USER PASSES IN. FOR EXAMPLE, DOES THE STOCK CONTAIN A "BULLISH" SENTIMENT?
-    # 1 < 2 IS A "BUY/BULLISH", AROUND 3/4 IS "HOLD", AND CLOSEER TO 5 IS "BEARISH"
+    # MEAN RATING UNDER 3 IS CONSIDERED A BUY/BULLISH, AND ABOVE 3 IS SELL/BEARISH
     def __contains__(self,sentiment):
-        if 1 < self.mean <= 2:
-            feeling = "bullish"
-        elif 2 < self.mean <= 4:
-            feeling = "hold"
+        if self.mean < 3:
+            feeling = "BULLISH"
         else:
-            feeling = "bearish"
-        if sentiment == feeling:
+            feeling = "BEARISH"
+        if sentiment.upper() == feeling:
             return "TRUE, THIS STOCK IS {}".format(feeling.upper())
         else:
             return "FALSE, SENTIMENT IS {}".format(feeling.upper())
+
+    # RETURNS THE RATING WITH THE MOST ANALYSTS
+    def consensus(self):
+        if None in self.ratings.values():
+            return "RATINGS UNAVAILABLE"
+        else:
+            return max(self.ratings, key=self.ratings.get)
+
+    # TAKES THE DIVIDEND YIELD AND CALCULATES THE APPROXIMATE ANNUAL DIVIDEND
+    # PAYOUT (YIELD * CURRENT PRICE )
+    def approx_dividend(self):
+        if self.dividend != "None":
+            div = float(self.dividend.replace("%", ""))
+            return ("${}".format(round(self.price * (div / 100), 2)))
+        else:
+            return "None"
 
     # RETURNS ALL THE PRICE TARGETS IN A BULLET FORMAT
     def price_targets(self):
@@ -49,17 +62,13 @@ class Stock(object):
                                                                                        self.targets[0]))
 
 
-    def consensus(self):
-        if None in self.ratings.values():
-            return "RATINGS UNAVAILABLE"
-        else:
-            return max(self.ratings, key=self.ratings.get)
 
 # CREATES DICTIONARY ENTRY THAT IS CACHED AND PASSED INTO THE STOCK CLASS
 def create_entry(bloom,cnn,reuters):
     entry = {}
     entry['name'] = bloom.find('h1', class_='companyName__99a4824b').text
-    entry['price'] = bloom.find('span', class_='priceText__1853e8a5').text.replace(",","")
+    entry['price'] = float(bloom.find('span', class_='priceText__1853e8a5').text.replace(",",""))
+    entry['dividend'] = find_dividend(bloom)
     entry['targets'] = find_targets(cnn)
     entry['volume'] = find_volume(bloom)
     consensus = find_ratings(reuters)
@@ -67,6 +76,15 @@ def create_entry(bloom,cnn,reuters):
     entry['ratings'] = consensus[0]
     entry['cache_time'] = datetime.now().strftime(DATETIME_FORMAT)
     return entry
+
+# RETRIEVES THE DIVIDEND YIELD % USING BLOOMBERG BEAUTIFULSOUP OBJECT
+def find_dividend(soup):
+    dividend = soup.find('span', text="Dividend").find_next('span').text
+    if dividend == "--":
+        return "None"
+    else:
+        return dividend
+
 
 # FINDS PRICE TARGETS USING CNN BEAUTIFULSOUP OBJECT
 def find_targets(soup):
@@ -158,7 +176,7 @@ def begin():
         with open("data.json") as f:
             cache = json.load(f)
     except:
-        print("NO CACHE EXISTS - CREATING ONE WITH THE FOLLOWING ENTRIES...")
+        print("\nNO CACHE EXISTS - CREATING ONE WITH THE FOLLOWING ENTRIES...")
         print("APPLE (AAPL), FACEBOOK (FB), EXXON (XOM), AMAZON (AMZN), GOOGLE (GOOGL)\n")
         create_tables()
         with open("data.json", "w") as f:
@@ -172,36 +190,43 @@ def begin():
 
 # EITHER RETRIEVES STOCK INFO FROM THE CACHE, GENERATES A NEW ENTRY, OR UPDATES
 # AN EXISTING ENTRY IF THE TIMESTAMP HAS EXPIRED
-def retrieve_information(ticker, cache):
+def retrieve_information(ticker, cache, testing=False):
     try:
         if ticker not in cache:
-            print("\n##### NOT IN CACHE - CREATING STOCK ENTRY FOR {}.....\n".format(ticker))
+            if not testing:
+                print("\n##### NOT IN CACHE - CREATING STOCK ENTRY FOR {}.....\n".format(ticker))
             update = False
             stock = get_info(ticker)
             stock_obj = stock[0]
             stock_cache_entry = stock[1]
         elif has_cache_expired(cache[ticker]['cache_time'],1):
-            print("\n##### GETTING MORE RECENT STOCK INFO FOR {}.....\n".format(ticker))
+            if not tesing:
+                print("\n##### GETTING MORE RECENT STOCK INFO FOR {}.....\n".format(ticker))
             update = True
             stock = get_info(ticker)
             stock_obj = stock[0]
             stock_cache_entry = stock[1]
         else:
-            print("\n##### RETRIEVING STOCK INFROMATION FOR {} FROM CACHE.....\n".format(ticker))
+            if not testing:
+                print("\n##### RETRIEVING STOCK INFROMATION FOR {} FROM CACHE.....\n".format(ticker))
             update = False
             stock_cache_entry = cache[ticker]
             stock_obj = Stock(stock_cache_entry)
     except:
         # IF ERROR WHEN RETRIEVING INFORMATION, RETURN "ERROR" FOR LATER USE
         return "Error"
+    return (stock_obj,stock_cache_entry,update)
 
+def print_basic(stock_obj):
     # PRINTS OUT BASIC INFORMATION ABOUT STOCK
     print("####################")
     print("NAME: {}".format(stock_obj.name))
     print("CURRENT PRICE: ${}".format(stock_obj.price))
     print("CONSENSUS: {}".format(stock_obj.consensus()))
+    print("DIVIDEND YIELD: {}".format(stock_obj.dividend))
+    print("APPROX ANNUAL DIVIDEND: {}".format(stock_obj.approx_dividend()))
     print(stock_obj.price_targets())
-    return (stock_obj,stock_cache_entry,update)
+
 
 # IF NEEDED, WILL CACHE STOCK DICT AND ENTER/UPDATE INFO INTO THE DATABASE
 def cache_or_db(ticker, stock_obj, stock_cache_entry, cache, update):
@@ -222,7 +247,7 @@ def cache_or_db(ticker, stock_obj, stock_cache_entry, cache, update):
 
 def run():
     print("\n")
-    print("#####################################################################")
+    print("#####################################################################\n")
     print("WELCOME! THIS PROGRAM IS DESIGNED TO LOOK UP BASIC STOCK INFORMATION")
     print("FOR A PUBLIC COMPANY GIVEN THE STOCK TICKER (E.G. FB FOR FACEBOOK)")
     print("THE PROGRAM USES BEAUTIFULSOUP TO SCRAPE THREE DIFFERENT SITES FOR")
@@ -242,7 +267,7 @@ def run():
     print("THE FOLLOWING STOCKS ALREADY EXIST IN THE CACHE AND DATABASE:")
     print(" * AAPL (APPLE)\n * FB (FACEBOOK)\n * XOM (EXXON)\n * AMZN (AMAZON)\n * GOOGL (ALPHABET)\n")
     print("SOME TICKERS THAT ARE NOT CACHED BY ARE KNOWN TO WORK INCLUDE:")
-    print(" * MSFT (MICROSOFT)\n * MCD (MCDONALD'S)\n * DIS (DISNEY)\n * BABA (ALIBABA))")
+    print(" * MSFT (MICROSOFT)\n * MCD (MCDONALD'S)\n * DIS (DISNEY)\n * BABA (ALIBABA))\n")
     print("#####################################################################\n")
 
     with open("data.json") as f:
@@ -255,13 +280,16 @@ def run():
     while ticker != "EXIT":
         stock = retrieve_information(ticker,cache)
         if stock != "Error":
+            print_basic(stock[0])
             cache_or_db(ticker, stock[0], stock[1], cache, stock[2])
-            create_visual(stock[0])
+            preference = input("\n##### VISUAL TO OPEN IN BROWSER AUTOMATICALLY? (TYPE YES OR NO): ").upper()
+            if preference == "YES":
+                create_visual(stock[0], ticker, False)
         else:
             print("##### COULD NOT RETRIEVE INFORMATION FOR GIVEN TICKER.")
             ticker = input("##### TRY ANOTHER TICKER, OR TYPE 'EXIT' TO EXIT: ").upper()
             continue
-        ticker = input("\n##### ENTER ANOTHER TICKER, OR TYPE 'EXIT' TO EXIT.: ").upper()
+        ticker = input("\n##### ENTER ANOTHER TICKER, OR TYPE 'EXIT' TO EXIT: ").upper()
 
 
 if __name__ == "__main__":

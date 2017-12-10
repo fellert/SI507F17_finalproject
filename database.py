@@ -1,7 +1,7 @@
 import psycopg2
 import psycopg2.extras
 
-conn = psycopg2.connect("dbname='final-test' user='ethanellert'")
+conn = psycopg2.connect("dbname='FELLERT_SI507FINAL' user='ethanellert'")
 cur = conn.cursor()
 
 def create_tables():
@@ -18,29 +18,33 @@ def create_tables():
         """,
         """
         CREATE TABLE Targets (
+            ID SERIAL PRIMARY KEY,
             Stock_ID INTEGER REFERENCES Company(ID) ON DELETE CASCADE,
+            Median DECIMAL(7,2),
             High DECIMAL(7,2),
-            Low DECIMAL(7,2),
-            Median DECIMAL(7,2)
+            Low DECIMAL(7,2)
         )
         """,
         """
         CREATE TABLE Info (
+            ID SERIAL PRIMARY KEY,
+            Stock_ID INTEGER REFERENCES Company(ID) ON DELETE CASCADE,
             Price DECIMAL(7,2),
             Volume VARCHAR(32),
             Consensus VARCHAR(32),
-            Stock_ID INTEGER REFERENCES Company(ID) ON DELETE CASCADE
+            Dividend_yield VARCHAR(8)
         )
         """,
         """
         CREATE TABLE Ratings (
+            ID SERIAL PRIMARY KEY,
+            Stock_ID INTEGER REFERENCES Company(ID) ON DELETE CASCADE,
             Buy INTEGER,
             Outperform INTEGER,
             Hold INTEGER,
             Underperform INTEGER,
             Sell INTEGER,
-            No_Opinion INTEGER,
-            Stock_ID INTEGER REFERENCES Company(ID) ON DELETE CASCADE
+            No_Opinion INTEGER
         )
         """
     )
@@ -54,13 +58,14 @@ def insert_stock(stock):
     volume = stock.volume
     mean = stock.mean
     ratings = stock.ratings
+    dividend = stock.dividend
     cur.execute("INSERT INTO Company (Name) VALUES (%s) RETURNING ID", (stock_name,))
     result = cur.fetchone()
     stock_id = result[0]
-    cur.execute("INSERT INTO Info (stock_id,price,volume,consensus) \
-                 VALUES (%s,%s,"'%s'",%s)", (stock_id,price,volume,mean))
-    cur.execute("INSERT INTO Targets (stock_id,high,low,median) \
-                 VALUES (%s,%s,%s,%s)", (stock_id,targets[1],targets[2],targets[0]))
+    cur.execute("INSERT INTO Info (stock_id,price,volume,consensus,dividend_yield) \
+                 VALUES (%s,%s,"'%s'",%s,%s)", (stock_id,price,volume,mean,dividend))
+    cur.execute("INSERT INTO Targets (stock_id, median, high, low) \
+                 VALUES (%s,%s,%s,%s)", (stock_id,targets[0],targets[1],targets[2]))
     cur.execute("INSERT INTO Ratings (stock_id,buy,outperform,hold,underperform,sell,no_opinion) \
                  VALUES (%s,%s,%s,%s,%s,%s,%s)", (stock_id,
                                                   ratings["BUY"],
@@ -81,9 +86,9 @@ def update_stock(stock):
     cur.execute("UPDATE Info SET price = %s, volume = %s, consensus = %s \
                  WHERE Info.stock_id = (SELECT Company.id from Company WHERE Company.name = %s)",
                 (price,volume,mean,stock.name))
-    cur.execute("UPDATE Targets SET high = %s, low = %s, median = %s \
+    cur.execute("UPDATE Targets SET median = %s, high = %s, low = %s \
                  WHERE Targets.stock_id = (SELECT Company.id from Company WHERE Company.name = %s)",
-                 (targets[1],targets[2],targets[0],stock.name))
+                 (targets[0],targets[1],targets[2],stock.name))
     cur.execute("UPDATE Ratings SET buy = %s, outperform = %s, hold = %s, \
                  underperform = %s, sell = %s, no_opinion = %s \
                  WHERE Ratings.stock_id = (SELECT Company.id from Company WHERE Company.name = %s)",

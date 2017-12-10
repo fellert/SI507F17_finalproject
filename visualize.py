@@ -2,7 +2,7 @@ import plotly
 from plotly import tools
 from plotly.graph_objs import *
 
-def create_visual(stock_obj):
+def create_visual(stock_obj, ticker, testing=False):
     ratings = ["BUY", "OUTPERFORM", "HOLD", "UNDERPERFORM", "SELL", "No Opinion"]
     rate_values = [stock_obj.ratings["BUY"] or None,
                    stock_obj.ratings["OUTPERFORM"] or None,
@@ -71,8 +71,7 @@ def create_visual(stock_obj):
     fig.append_trace(trace1, 1, 1)
     fig.append_trace(trace2, 2, 1)
     fig['layout'].update(layout)
-    preference = input("\n##### VISUAL TO OPEN IN BROWSER AUTOMATICALLY? (TYPE YES OR NO): ").upper()
-    if preference == "YES":
-        plotly.offline.plot(fig,filename="wall_st_ratings.html")
+    if testing == False:
+        plotly.offline.plot(fig,filename="{}_info.html".format(ticker))
     else:
-        plotly.offline.plot(fig,filename="wall_st_ratings.html",auto_open=False)
+        plotly.offline.plot(fig,filename="{}_info.html".format(ticker), auto_open=False)
