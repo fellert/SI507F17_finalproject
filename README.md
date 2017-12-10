@@ -15,9 +15,10 @@ each site for the following data:
 
 
 File                            | Contents
--------------                   | -------------
-SI507F17_finalproject.py        | Content Cell
-SI507F17_finalproject_tests.py  | Content Cell
+------------------------------- | -------------
+SI507F17_finalproject.py        | Contains all of the primary code.
+SI507F17_finalproject_tests.py  | Three classes and 16 methods that test the request,
+                                | caching, Stock() object class, and database functions.
 visualize.py                    |
 database.py                     |
 
