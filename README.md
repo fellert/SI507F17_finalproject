@@ -16,4 +16,7 @@ each site for the following data:
 ## Installation/Requirements
 
 Run pip install requirements.txt to install the required python packages, including
-JSON, Requests, BeautifulSoup, Unittest, and Plotly.
+Requests, BeautifulSoup, psycopg2, urllib3, and Plotly. Other imported packages include
+unittest and JSON. Plotly has both online (using and API) and offline modes - this program
+uses the plotly.offline.plot to create graphs of stock data that will open in the
+user's browser as localhost. 
