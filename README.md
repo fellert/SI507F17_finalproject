@@ -14,6 +14,7 @@ CNN Money  | 12-month price targets (median, high, low)
 Reuters    | Analyst ratings (buy, outperform, hold, underperform, sell, no opinion)
 
 
+
 ## Overview of Files
 
 * **SI507F17_finalproject.py**
@@ -31,6 +32,7 @@ Reuters    | Analyst ratings (buy, outperform, hold, underperform, sell, no opin
     information if the cache timestamp has expired
 
 
+
 ## Installation/Requirements
 
 Run pip install requirements.txt to install the required python packages, including
@@ -44,6 +46,8 @@ database.py file to connect and insert information.
 
 To run the program after installing the required packages, simply type *python3 SI507F17_finalproject.py*
 from the command line. You may also run the testing file as *python3 SI507F17_finalproject_tests.py*
+
+
 
 ## Running the Program
 
@@ -62,6 +66,8 @@ approximate annual dividend payout, and consensus analyst rating (i.e buy, sell,
 prompted as to whether they would like a plotly graph to generate a html file and automatically open it in their
 browser or if they would just like to save the file to the directory. After this, the user can either exit the
 program or choose to enter another stock ticker.
+
+
 
 ## Additional Links
 
