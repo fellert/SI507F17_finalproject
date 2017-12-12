@@ -40,18 +40,19 @@ checks if this matched the user input, a consensus method which finds the rating
   * Contains the required dbname and an empty user field (for whoever runs the program).
 * **screenshots**
   * Contains screenshots of every table in the database with the automatically inserted 5 companies, a plotly chart for Amazon,
-    two of the command line - when the program is first run, and then for requests to AAPL (in cache), MSFT (not in cache, makes new request), GELYF (does not have any price targets), and DL (does not have any analyst ratings, so consensus cannot be made) 
+    two of the command line - when the program is first run, and then for requests to AAPL (in cache), MSFT (not in cache, makes new request), GELYF (does not have any price targets), and DL (does not have any analyst ratings, so consensus cannot be made)
 
 ## Installation/Requirements
 
- * Run *pip install -r requirements.txt* to install the required python packages, including
+* Run *pip install -r requirements.txt* to install the required python packages, including
    Requests, BeautifulSoup, psycopg2, and Plotly.
- * Plotly has both online (using and API) and offline modes - this program
+* Plotly has both online (using and API) and offline modes - this program
    uses the plotly.offline.plot to create graphs of stock data that will open directly in the
    user's browser - there is no need for API keys or secret data.
- * All files are written to run using python 3.6.
- * A PostgreSQL database called **FELLERT_SI507FINAL** needs to be created. The config file
+* All files are written to run using python 3.6.
+* A PostgreSQL database called **FELLERT_SI507FINAL** needs to be created. The config file
    contains an empty user="" field, which may also be filled out.
+* You can start your postgres database by typing pg_ctl -D /usr/local/var/postgres start
 
 To run the program after installing the required packages, simply type *python3 SI507F17_finalproject.py*
 from the command line. You may also run the testing file as *python3 SI507F17_finalproject_tests.py*.
