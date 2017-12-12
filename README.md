@@ -43,28 +43,33 @@ Reuters    | Analyst ratings (buy, outperform, hold, underperform, sell, no opin
    function is at the top of the database.py file and has an empty user="" field that can
    also be filled in.
 
-
 To run the program after installing the required packages, simply type *python3 SI507F17_finalproject.py*
 from the command line. You may also run the testing file as *python3 SI507F17_finalproject_tests.py*
 
 ## Running the Program
 
-### Process:
-* Clone/download the repository, create database FELLERT_SI507FINAL, and install the proper packages using
-  pip install -r requirements.txt
+### Full Process:
+* Clone/download the repository, create database FELLERT_SI507FINAL (and enter user="" info),
+  and install the proper packages using pip install -r requirements.txt
 * Run the program by typing *python3 SI507F17_finalproject*. As the cache is not included in the repository,
   the first time the program is run it will create a file called "data.json", make requests, BeautifulSoup
-  objects and input stock information for 5 companies (AAPL, FB, XOM, AMZN, and GOOGL)
+  objects, and input stock information for 5 companies (AAPL, FB, XOM, AMZN, and GOOGL) into the cache and database
 * The user will then be prompted to enter a stock ticker, in which the program then:
-  * Looks to see if the ticker is in the cache - if not it makes requests, BeautifulSoup, and Stock() object
+  * Looks to see if the ticker is in the cache - if not, it makes requests, BeautifulSoup and Stock() objects
   * If in the cache, it checks the timestamp and will run again if expired
   * If both pass, it will pull information from the cache and make a Stock() object
-  * If the first two cases, the program will then update the cache and either enter/update the database
+  * If the first two cases, the program will then update the cache and either create a new entry or update the database
 * Some basic information about the stock is then printed
 * The program will then generate a plotly HTML file, but the user has a choice as to automatically open
   a browser tab or skip
 * The user is then prompted to enter another ticker or exit
 
+SI507F17_finalproject_tests.py can be run by simply typing *pyhton SI507F17_finalproject_tests.py* from the command line.
+Three classes and 16 methods will then be executed. One important note is that one method tests the contains function,
+which checks if a sentiment input (Bullish for stock that are a buy, and Bearish for those that are a sell) is in the
+stock's analyst ratings. It does this by converting the mean rating (on a scale of 1-5, lower numbers are buys, while
+higher ones are sell). Will markets changing by the day, the analysts ratings may be updated and shift this mean rating,
+thus throwing off the test. Just to be sure, I chose a stock that has been a buy for a long time, so this is unlikely. 
 
 ## Additional Links
 
