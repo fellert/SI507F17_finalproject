@@ -13,6 +13,13 @@ Bloomberg  | Basic information (company name, price, trading volume, dividend yi
 CNN Money  | 12-month price targets (median, high, low)
 Reuters    | Analyst ratings (buy, outperform, hold, underperform, sell, no opinion)
 
+After pulling information from the BeautifulSoup objects and storing it into a dictionary,
+the program then uses this info to create/instantiate a Stock() object - which includes basic information,
+a repr method, a method that finds an approximate annual dividend payout using the dividend yield, a
+contains method that converts the mean analyst rating into a sentiment (Bullish or Bearish) and
+checks if this matched the user input, a consensus method which finds the rating with most analyst support
+(i.e. Buy, Sell, Hold, etc.), and a price_targets method that prints out the 12-month targets in a bullet format.
+
 
 ## Overview of Files
 
@@ -20,7 +27,7 @@ Reuters    | Analyst ratings (buy, outperform, hold, underperform, sell, no opin
   * Contains the code that runs the program loop to make the url requests, construct the Stock() object,
     and build a dictionary entry to be added to the cache (if needed) for a user-entered ticker
 * **SI507F17_finalproject_tests.py**
-  * Contains three classes and 16 methods that test the functions, caching, databases, and edge cases
+  * Contains four classes and 16 methods that test the functions, caching, databases, and edge cases
     (i.e. if a ticker does not exist or if some information like the analyst ratings are unavailable)
 * **visualize.py**
   * Contains code to construct two plotly bar graph, as well as the additional formatting dictionary
@@ -29,7 +36,6 @@ Reuters    | Analyst ratings (buy, outperform, hold, underperform, sell, no opin
   * Contains three functions - one that builds the database tables the first time the program is run,
     one that inserts a stock's information the first time it is sentiment, one that updated a stock's
     information if the cache timestamp has expired
-
 
 ## Installation/Requirements
 
@@ -50,32 +56,30 @@ from the command line. You may also run the testing file as *python3 SI507F17_fi
 
 ### Full Process:
 * Clone/download the repository, create database FELLERT_SI507FINAL (and enter user="" info),
-  and install the proper packages using pip install -r requirements.txt
-* Run the program by typing *python3 SI507F17_finalproject*. As the cache is not included in the repository,
-  the first time the program is run it will create a file called "data.json", make requests, BeautifulSoup
-  objects, and input stock information for 5 companies (AAPL, FB, XOM, AMZN, and GOOGL) into the cache and database
+  and install the proper packages by typing pip install -r requirements.txt
+* Run the program by typing *python3 SI507F17_finalproject* from the command line. As the cache is not included in the
+  repository, the first time the program runs it will create a file called "data.json", make requests, BeautifulSoup
+  and Stock() objects, and insert stock information for 5 companies (AAPL, FB, XOM, AMZN, and GOOGL) into the cache and database
 * The user will then be prompted to enter a stock ticker, in which the program then:
   * Looks to see if the ticker is in the cache - if not, it makes requests, BeautifulSoup and Stock() objects
   * If in the cache, it checks the timestamp and will run again if expired
   * If both pass, it will pull information from the cache and make a Stock() object
   * If the first two cases, the program will then update the cache and either create a new entry or update the database
 * Some basic information about the stock is then printed
-* The program will then generate a plotly HTML file, but the user has a choice as to automatically open
-  a browser tab or skip
+* The program will then generate a plotly HTML file "stock_info.html", but the user has a choice as to automatically open
+  a browser tab to display the chart or to skip. Each chart displays the 12-month price targets and analyst ratings. An example of the expected final result can be found in the repository under "expected_results"
 * The user is then prompted to enter another ticker or exit
 
+### Tests File and Important Note:
 SI507F17_finalproject_tests.py can be run by simply typing *pyhton SI507F17_finalproject_tests.py* from the command line.
-Three classes and 16 methods will then be executed. One important note is that one method tests the contains function,
-which checks if a sentiment input (Bullish for stock that are a buy, and Bearish for those that are a sell) is in the
-stock's analyst ratings. It does this by converting the mean rating (on a scale of 1-5, lower numbers are buys, while
+Four classes and 16 methods will then be executed (all of which should pass). One important note is that one method tests the contains function, which checks if a sentiment input (Bullish for stock that are a buy, and Bearish for those that are a sell) is in the stock's analyst ratings. It does this by converting the mean rating (on a scale of 1-5, lower numbers are buys, while
 higher ones are sell). Will markets changing by the day, the analysts ratings may be updated and shift this mean rating,
-thus throwing off the test. Just to be sure, I chose a stock that has been a buy for a long time, so this is unlikely. 
+thus throwing off the test. Just to be sure, I chose a stock that has been a buy for a long time, so this is unlikely.
 
 ## Additional Links
 
 * Example CNN Money request: http://money.cnn.com/quote/quote.html?symb=AAPL
 * Example Bloomberg request: https://www.bloomberg.com/quote/AAPL:US
 * Example Reuters request: https://www.reuters.com/finance/stocks/overview/AAPL.OQ
-
 * Plotly guide on bar charts: https://plot.ly/python/bar-charts/
 * Plotly guide for subplots (graphing to charts on one page): https://plot.ly/python/subplots/
