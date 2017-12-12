@@ -66,10 +66,10 @@ from the command line. You may also run the testing file as *python3 SI507F17_fi
   repository, the first time the program runs it will create a file called "data.json", make requests, BeautifulSoup
   and Stock() objects, and insert stock information for 5 companies (AAPL, FB, XOM, AMZN, and GOOGL) into the cache and database.
 3. The user will then be prompted to enter a stock ticker, in which the program then:
-  1. Looks to see if the ticker is in the cache - if not, it makes requests, BeautifulSoup and Stock() objects.
-  2. If in the cache, it checks the timestamp and will run again if expired.
-  3. If both pass, it will pull information from the cache and make a Stock() object.
-  4. If the first two cases, the program will then update the cache and either create a new entry or update the database.
+  * Looks to see if the ticker is in the cache - if not, it makes requests, BeautifulSoup and Stock() objects.
+  * If in the cache, it checks the timestamp and will run again if expired.
+  * If both pass, it will pull information from the cache and make a Stock() object.
+  * If the first two cases, the program will then update the cache and either create a new entry or update the database.
 4. Some basic information about the stock is then printed.
 5. The program will then generate a plotly HTML file "stock_info.html", but the user has a choice as to automatically open
   a browser tab to display the chart or to skip. Each chart displays the 12-month price targets and analyst ratings. An example of the expected final result, labeled "amazon_plotly" may be found in the repository in the screenshots directory.
