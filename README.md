@@ -60,20 +60,20 @@ from the command line. You may also run the testing file as *python3 SI507F17_fi
 ## Running the Program
 
 ### Full Process:
-1 Clone/download the repository, create database FELLERT_SI507FINAL (and enter user="" info),
+1. Clone/download the repository, create database FELLERT_SI507FINAL (and enter user="" info),
   and install the proper packages by typing pip install -r requirements.txt.
-1 Run the program by typing *python3 SI507F17_finalproject* from the command line. As the cache is not included in the
+2. Run the program by typing *python3 SI507F17_finalproject* from the command line. As the cache is not included in the
   repository, the first time the program runs it will create a file called "data.json", make requests, BeautifulSoup
   and Stock() objects, and insert stock information for 5 companies (AAPL, FB, XOM, AMZN, and GOOGL) into the cache and database.
-3 The user will then be prompted to enter a stock ticker, in which the program then:
+3. The user will then be prompted to enter a stock ticker, in which the program then:
   * Looks to see if the ticker is in the cache - if not, it makes requests, BeautifulSoup and Stock() objects.
   * If in the cache, it checks the timestamp and will run again if expired.
   * If both pass, it will pull information from the cache and make a Stock() object.
   * If the first two cases, the program will then update the cache and either create a new entry or update the database.
-4 Some basic information about the stock is then printed.
-5 The program will then generate a plotly HTML file "stock_info.html", but the user has a choice as to automatically open
+4. Some basic information about the stock is then printed.
+5. The program will then generate a plotly HTML file "stock_info.html", but the user has a choice as to automatically open
   a browser tab to display the chart or to skip. Each chart displays the 12-month price targets and analyst ratings. An example of the expected final result, labeled "amazon_plotly" may be found in the repository in the screenshots directory.
-6 The user is then prompted to enter another ticker or exit.
+6. The user is then prompted to enter another ticker or exit.
 
 ### Tests File and Important Note:
 SI507F17_finalproject_tests.py can be run by simply typing *pyhton SI507F17_finalproject_tests.py* from the command line.
