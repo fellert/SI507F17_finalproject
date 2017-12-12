@@ -194,21 +194,21 @@ def retrieve_information(ticker, cache, testing=False):
     try:
         if ticker not in cache:
             if testing == False:
-                print("\n##### NOT IN CACHE - CREATING STOCK ENTRY FOR {}.....\n".format(ticker))
+                print("##### NOT IN CACHE - CREATING STOCK ENTRY FOR {}.....".format(ticker))
             update = False
             stock = get_info(ticker)
             stock_obj = stock[0]
             stock_cache_entry = stock[1]
         elif has_cache_expired(cache[ticker]['cache_time'],1):
             if testing == False:
-                print("\n##### GETTING MORE RECENT STOCK INFO FOR {}.....\n".format(ticker))
+                print("##### GETTING MORE RECENT STOCK INFO FOR {}.....".format(ticker))
             update = True
             stock = get_info(ticker)
             stock_obj = stock[0]
             stock_cache_entry = stock[1]
         else:
             if testing == False:
-                print("\n##### RETRIEVING STOCK INFROMATION FOR {} FROM CACHE.....\n".format(ticker))
+                print("##### RETRIEVING STOCK INFROMATION FOR {} FROM CACHE.....".format(ticker))
             update = False
             stock_cache_entry = cache[ticker]
             stock_obj = Stock(stock_cache_entry)
@@ -219,7 +219,7 @@ def retrieve_information(ticker, cache, testing=False):
 
 def print_basic(stock_obj):
     # PRINTS OUT BASIC INFORMATION ABOUT STOCK
-    print("####################")
+    print("\n####################")
     print("NAME: {}".format(stock_obj.name))
     print("CURRENT PRICE: ${}".format(stock_obj.price))
     print("CONSENSUS: {}".format(stock_obj.consensus()))
@@ -277,6 +277,7 @@ def run():
     # HAS THE OPTION OF EITHER AUTOMATICALLY OPENEING A NEW BROWSER TAB TO
     # DISPLAY THE PLOTLY GRAPH, OR EXAMINE THE HTML FILE GENERATED
     ticker = input("##### PLEASE ENTER A TICKER: ").upper()
+    ticker = ticker.replace(" ", "")
     while ticker != "EXIT":
         stock = retrieve_information(ticker,cache)
         if stock != "Error":
@@ -287,9 +288,11 @@ def run():
                 create_visual(stock[0], ticker, False)
         else:
             print("##### COULD NOT RETRIEVE INFORMATION FOR GIVEN TICKER.")
-            ticker = input("##### TRY ANOTHER TICKER, OR TYPE 'EXIT' TO EXIT: ").upper()
+            ticker = input("\n##### TRY ANOTHER TICKER, OR TYPE 'EXIT' TO EXIT: ").upper()
+            ticker = ticker.replace(" ", "")
             continue
         ticker = input("\n##### ENTER ANOTHER TICKER, OR TYPE 'EXIT' TO EXIT: ").upper()
+        ticker = ticker.replace(" ", "")
 
 
 if __name__ == "__main__":

@@ -37,7 +37,10 @@ checks if this matched the user input, a consensus method which finds the rating
     one that inserts a stock's information the first time it is sentiment, one that updated a stock's
     information if the cache timestamp has expired.
 * **config.py**
-  * contains the required dbname and an empty user field (for whoever runs the program).
+  * Contains the required dbname and an empty user field (for whoever runs the program).
+* **screenshots**
+  * Contains screenshots of every table in the database with the automatically inserted 5 companies, a plotly chart for Amazon,
+    two of the command line - when the program is first run, and then for requests to AAPL (in cache), MSFT (not in cache, makes new request), GELYF (does not have any price targets), and DL (does not have any analyst ratings, so consensus cannot be made) 
 
 ## Installation/Requirements
 
@@ -68,7 +71,7 @@ from the command line. You may also run the testing file as *python3 SI507F17_fi
   * If the first two cases, the program will then update the cache and either create a new entry or update the database.
 * Some basic information about the stock is then printed.
 * The program will then generate a plotly HTML file "stock_info.html", but the user has a choice as to automatically open
-  a browser tab to display the chart or to skip. Each chart displays the 12-month price targets and analyst ratings. An example of the expected final result can be found in the repository under "expected_results".
+  a browser tab to display the chart or to skip. Each chart displays the 12-month price targets and analyst ratings. An example of the expected final result, labeled "amazon_plotly" may be found in the repository in the screenshots directory.
 * The user is then prompted to enter another ticker or exit.
 
 ### Tests File and Important Note:
@@ -81,5 +84,10 @@ higher ones are sell). Because markets change by the day, there is a small chang
 * Example CNN Money request: http://money.cnn.com/quote/quote.html?symb=AAPL
 * Example Bloomberg request: https://www.bloomberg.com/quote/AAPL:US
 * Example Reuters request: https://www.reuters.com/finance/stocks/overview/AAPL.OQ
+--
+* Plotly installation: https://plot.ly/python/getting-started/
 * Plotly guide on bar charts: https://plot.ly/python/bar-charts/
 * Plotly guide for subplots (graphing to charts on one page): https://plot.ly/python/subplots/
+* BeautifulSoup documentation: https://www.crummy.com/software/BeautifulSoup/bs4/doc/
+* Requests documentation: http://docs.python-requests.org/en/master/
+* psycopg2 documentation: http://initd.org/psycopg/docs/

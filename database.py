@@ -1,8 +1,9 @@
 import psycopg2
 import psycopg2.extras
+from config import *
 
 # CONNECTS TO DATABASE CALLED FELLERT_SI507FINAL
-conn = psycopg2.connect("dbname='FELLERT_SI507FINAL' user=''")
+conn = psycopg2.connect("dbname='{}' user='{}'".format(dbname,user))
 cur = conn.cursor()
 
 # CREATES COMPANY, INFO, RATINGS, AND TARGETS TABLES
@@ -83,7 +84,7 @@ def insert_stock(stock):
                 )
     conn.commit()
 
-# RUNS EVERY TIME THE TIMESTAMP HAS EXPIRED 
+# RUNS EVERY TIME THE TIMESTAMP HAS EXPIRED
 def update_stock(stock):
     price = float(stock.price)
     targets = stock.targets
