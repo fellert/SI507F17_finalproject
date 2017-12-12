@@ -72,9 +72,8 @@ from the command line. You may also run the testing file as *python3 SI507F17_fi
 
 ### Tests File and Important Note:
 SI507F17_finalproject_tests.py can be run by simply typing *pyhton SI507F17_finalproject_tests.py* from the command line.
-Four classes and 16 methods will then be executed (all of which should pass). One important note is that one method tests the contains function, which checks if a sentiment input (Bullish for stock that are a buy, and Bearish for those that are a sell) is in the stock's analyst ratings. It does this by converting the mean rating (on a scale of 1-5, lower numbers are buys, while
-higher ones are sell). Will markets changing by the day, the analysts ratings may be updated and shift this mean rating,
-thus throwing off the test. Just to be sure, I chose a stock that has been a buy for a long time, so this is unlikely.
+Four classes and 16 methods will then be executed (all of which should pass). One important note is that one method tests the contains function, which checks if a sentiment input (Bullish for stocks that are a buy, and Bearish for those that are a sell) is in the stock's analyst ratings. It does this by converting the mean rating (on a scale of 1-5, lower numbers are a buy, while
+higher ones are sell). Because markets change by the day, there is a small change the analysts ratings could change and alter the mean rating, possibly throwing off the test. Just to be sure, I chose a stock that has been a buy for a long time, so this is unlikely.
 
 ## Additional Links
 
