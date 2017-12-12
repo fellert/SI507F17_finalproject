@@ -267,7 +267,7 @@ def run():
     print("THE FOLLOWING STOCKS ALREADY EXIST IN THE CACHE AND DATABASE:")
     print(" * AAPL (APPLE)\n * FB (FACEBOOK)\n * XOM (EXXON)\n * AMZN (AMAZON)\n * GOOGL (ALPHABET)\n")
     print("SOME TICKERS THAT ARE NOT CACHED BY ARE KNOWN TO WORK INCLUDE:")
-    print(" * MSFT (MICROSOFT)\n * MCD (MCDONALD'S)\n * DIS (DISNEY)\n * BABA (ALIBABA))\n")
+    print(" * MSFT (MICROSOFT)\n * MCD (MCDONALD'S)\n * DIS (DISNEY)\n * BABA (ALIBABA)\n")
     print("#####################################################################\n")
 
     with open("data.json") as f:

@@ -1,9 +1,14 @@
 import psycopg2
 import psycopg2.extras
 
-conn = psycopg2.connect("dbname='FELLERT_SI507FINAL' user='ethanellert'")
+# CONNECTS TO DATABASE CALLED FELLERT_SI507FINAL
+conn = psycopg2.connect("dbname='FELLERT_SI507FINAL' user=''")
 cur = conn.cursor()
 
+# CREATES COMPANY, INFO, RATINGS, AND TARGETS TABLES
+# THIS IS ONLY RUN ONCE - AT THE VERY BEGINNING, IF THERE IS NO CACHE
+# THE COMPANY TABLE (MORE SPECIFICALLY THE NAME OF THE COMPANY) ACTS AS THE
+# FOREIGN KEY, CONNECTING TO THE OTHER THREE TABLES
 def create_tables():
     cur.execute("DROP TABLE IF EXISTS Targets")
     cur.execute("DROP TABLE IF EXISTS Info")
@@ -51,6 +56,7 @@ def create_tables():
     for command in commands:
         cur.execute(command)
 
+# RUNS EVERY TIME THERE IS A NEW TICKER NOT IN THE CACHE
 def insert_stock(stock):
     stock_name = stock.name
     price = float(stock.price)
@@ -77,6 +83,7 @@ def insert_stock(stock):
                 )
     conn.commit()
 
+# RUNS EVERY TIME THE TIMESTAMP HAS EXPIRED 
 def update_stock(stock):
     price = float(stock.price)
     targets = stock.targets
