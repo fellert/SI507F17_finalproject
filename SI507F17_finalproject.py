@@ -138,8 +138,8 @@ def has_cache_expired(timestamp, expire_in_days):
     now = datetime.now()
     cache_timestamp = datetime.strptime(timestamp, DATETIME_FORMAT)
     delta = now - cache_timestamp
-    delta_in_days = delta.days
-    if delta_in_days >= 1:
+    delta_days = delta.days
+    if delta_days >= expire_in_days:
         return True
     else:
         return False
@@ -193,21 +193,21 @@ def begin():
 def retrieve_information(ticker, cache, testing=False):
     try:
         if ticker not in cache:
-            if not testing:
+            if testing == False:
                 print("\n##### NOT IN CACHE - CREATING STOCK ENTRY FOR {}.....\n".format(ticker))
             update = False
             stock = get_info(ticker)
             stock_obj = stock[0]
             stock_cache_entry = stock[1]
         elif has_cache_expired(cache[ticker]['cache_time'],1):
-            if not tesing:
+            if testing == False:
                 print("\n##### GETTING MORE RECENT STOCK INFO FOR {}.....\n".format(ticker))
             update = True
             stock = get_info(ticker)
             stock_obj = stock[0]
             stock_cache_entry = stock[1]
         else:
-            if not testing:
+            if testing == False:
                 print("\n##### RETRIEVING STOCK INFROMATION FOR {} FROM CACHE.....\n".format(ticker))
             update = False
             stock_cache_entry = cache[ticker]

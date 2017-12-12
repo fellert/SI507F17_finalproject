@@ -78,6 +78,6 @@ def create_visual(stock_obj, ticker, testing=False):
     fig['layout'].update(layout)
     # DO NOT CREATE PLOTS WHEN RUNNING THE TEST PROGRAM (WHICH WILL CREATE SEVERAL STOCK OBJECTS)
     if testing == False:
-        plotly.offline.plot(fig,filename="{}_info.html".format(ticker))
+        plotly.offline.plot(fig,filename="stock_info.html")
     else:
-        plotly.offline.plot(fig,filename="{}_info.html".format(ticker), auto_open=False)
+        plotly.offline.plot(fig,filename="stock_info.html", auto_open=False)

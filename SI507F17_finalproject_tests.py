@@ -168,7 +168,7 @@ class TestVisualization(unittest.TestCase):
         self.request = retrieve_information('DIS', self.cache, True)
         self.dis = self.request[0]
         create_visual(self.dis, 'DIS', True)
-        self.visual = open("DIS_info.html")
+        self.visual = open("stock_info.html")
 
     # TESTS IF THE CREATE_VISUAL FUNCTION ACTUALLY CREATES AN HTML FILE
     def test_visual_file(self):
