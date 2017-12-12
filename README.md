@@ -33,36 +33,37 @@ Reuters    | Analyst ratings (buy, outperform, hold, underperform, sell, no opin
 
 ## Installation/Requirements
 
-Run pip install requirements.txt to install the required python packages, including
-Requests, BeautifulSoup, psycopg2, urllib3, and Plotly. Other imported packages include
-unittest and JSON. Plotly has both online (using and API) and offline modes - this program
-uses the plotly.offline.plot to create graphs of stock data that will open in the
-user's browser as localhost. In addition, all files are written to run using python3.6.
+ * Run *pip install -r requirements.txt* to install the required python packages, including
+   Requests, BeautifulSoup, psycopg2, and Plotly.
+ * Plotly has both online (using and API) and offline modes - this program
+   uses the plotly.offline.plot to create graphs of stock data that will open directly in the
+   user's browser - there is no need for API keys or secret data.
+ * All files are written to run using python 3.6.
+ * A PostgreSQL database called **FELLERT_SI507FINAL** needs to be created. The connection
+   function is at the top of the database.py file and has an empty user="" field that can
+   also be filled in.
 
-A PostgreSQL **database named FELLERT_SI507FINAL** will also need to be created in order for the
-database.py file to connect and insert information.
 
 To run the program after installing the required packages, simply type *python3 SI507F17_finalproject.py*
 from the command line. You may also run the testing file as *python3 SI507F17_finalproject_tests.py*
 
-
 ## Running the Program
 
-The program initially tries to open the "data.json" cache file, and when this fails (as it is not included)
-it will create the file and run a loop creating url requests, a Stock() object, and inserting information
-into the database/cache for five companies (AAPL, FB, XOM, AMZN, and GOOGL). This also fulfills the requirement
-of having at least four rows in information in the database.
-
-Once this is complete, the user will be show a prompt/instructions and asked to enter a stock ticker.
-The program will check to see if the ticker is in the database or (if it is in the cache) if the timestamp
-has expired. If either fail, a new request and object are created and information is entered/updated in the cache
-and database. Otherwise the stock information is retrieved from the cache and a new object is created.
-
-Some basic information is printed at the end of each run - company name, price and price targets, dividend yield,
-approximate annual dividend payout, and consensus analyst rating (i.e buy, sell, hold, etc.). The user is then
-prompted as to whether they would like a plotly graph to generate a html file and automatically open it in their
-browser or if they would just like to save the file to the directory. After this, the user can either exit the
-program or choose to enter another stock ticker.
+### Process:
+* Clone/download the repository, create database FELLERT_SI507FINAL, and install the proper packages using
+  pip install -r requirements.txt
+* Run the program by typing *python3 SI507F17_finalproject*. As the cache is not included in the repository,
+  the first time the program is run it will create a file called "data.json", make requests, BeautifulSoup
+  objects and input stock information for 5 companies (AAPL, FB, XOM, AMZN, and GOOGL)
+* The user will then be prompted to enter a stock ticker, in which the program then:
+  * Looks to see if the ticker is in the cache - if not it makes requests, BeautifulSoup, and Stock() object
+  * If in the cache, it checks the timestamp and will run again if expired
+  * If both pass, it will pull information from the cache and make a Stock() object
+  * If the first two cases, the program will then update the cache and either enter/update the database
+* Some basic information about the stock is then printed
+* The program will then generate a plotly HTML file, but the user has a choice as to automatically open
+  a browser tab or skip
+* The user is then prompted to enter another ticker or exit
 
 
 ## Additional Links
