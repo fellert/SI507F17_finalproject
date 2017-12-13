@@ -10,7 +10,7 @@ DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S.%f"
 
 # CLASS THAT CREATES A STOCK OBJECT FOR A PARTICULAR STOCK, GIVEN 3 SOUP OBJECTS
 class Stock(object):
-    def __init__(self,dictionary):
+    def __init__(self, dictionary):
         self.dict = dictionary
         self.name = self.dict['name']
         self.price = self.dict['price']
@@ -21,12 +21,12 @@ class Stock(object):
         self.dividend = self.dict['dividend']
 
     def __repr__(self):
-        return "THE MOST RECENT PRICE FOR {} IS ${}".format(self.name,self.price)
+        return "THE MOST RECENT PRICE FOR {} IS ${}".format(self.name, self.price)
 
     # CONVERTS MEAN RATING (SELF.MEAN) INTO A SENTIMENT, CHECKS IF THIS IS EQUAL TO THE ONE
     # THE USER PASSES IN. FOR EXAMPLE, DOES THE STOCK CONTAIN A "BULLISH" SENTIMENT?
     # MEAN RATING UNDER 3 IS CONSIDERED A BUY/BULLISH, AND ABOVE 3 IS SELL/BEARISH
-    def __contains__(self,sentiment):
+    def __contains__(self, sentiment):
         if self.mean != None:
             if self.mean < 3:
                 feeling = "BULLISH"
@@ -67,7 +67,7 @@ class Stock(object):
 
 
 # CREATES DICTIONARY ENTRY THAT IS CACHED AND PASSED INTO THE STOCK CLASS
-def create_entry(bloom,cnn,reuters):
+def create_entry(bloom, cnn, reuters):
     entry = {}
     entry['name'] = bloom.find('h1', class_='companyName__99a4824b').text
     entry['price'] = float(bloom.find('span', class_='priceText__1853e8a5').text.replace(",",""))
@@ -95,7 +95,7 @@ def find_targets(soup):
     count = 0
     predictions = soup.find('div', class_='wsod_twoCol')
     predictions = predictions.find_next('p').text
-    predictions = predictions.replace(",","")
+    predictions = predictions.replace(",", "")
     predictions = predictions.split()
     for x in range(len(predictions)):
         if count < 3:
@@ -133,16 +133,17 @@ def find_ratings(soup):
         for rating in ratings:
             consensus[rating] = None
         mean_rating = None
-    return (consensus,mean_rating)
+    return (consensus, mean_rating)
 
 # CHECKS THE TIMESPAMP FOR A TICKER IN THE CACHE. IF THE STOCK HAS BEEN IN
 # FOR MORE THAN ONE DAY, THE PROGRAM RETRIEVED UP-TO-DATE INFO
-def has_cache_expired(timestamp, expire_in_days):
+# THIS FUNCTION WAS PARTIALLY BORROWED FROM A CLASS EXAMPLE
+def has_cache_expired(timestamp):
     now = datetime.now()
     cache_timestamp = datetime.strptime(timestamp, DATETIME_FORMAT)
     delta = now - cache_timestamp
     delta_days = delta.days
-    if delta_days >= expire_in_days:
+    if delta_days >= 1:
         return True
     else:
         return False
@@ -152,9 +153,9 @@ def has_cache_expired(timestamp, expire_in_days):
 # ERROR INTO EACH OF THE URLS
 def check_ticker(ticker):
     tickers = {}
-    tickers["bloom"] = ticker.replace(".","/")
-    tickers["cnn"] = ticker.replace(".","")
-    tickers["reuters"] = ticker.replace(".","")
+    tickers["bloom"] = ticker.replace(".", "/")
+    tickers["cnn"] = ticker.replace(".", "")
+    tickers["reuters"] = ticker.replace(".", "")
     return tickers
 
 # RUNS THREE REQUESTS AND CREATES BEAUTIFULSOUP OBJECTS FOR A TICKER
@@ -167,14 +168,14 @@ def get_info(ticker):
     bloom_soup = BeautifulSoup(bloom_data, "html.parser")
     cnn_soup = BeautifulSoup(cnn_data, "html.parser")
     reuters_soup = BeautifulSoup(reuters_data, "html.parser")
-    stock_entry = create_entry(bloom_soup,cnn_soup,reuters_soup)
+    stock_entry = create_entry(bloom_soup, cnn_soup, reuters_soup)
     stock_info = Stock(stock_entry)
-    return (stock_info,stock_entry)
+    return (stock_info, stock_entry)
 
 # CHECKS IF CACHE EXISTS. IF NOT CREATE ONE AND RUNS THE PROGRAM FOR 5 STOCKS
 # AUTOMATICALLY ENTERING THE INFORMATION INTO THE CACHE AND DATABASE
 def begin():
-    auto = ["AAPL","FB","XOM","AMZN","GOOGL"]
+    auto = ["AAPL", "FB", "XOM", "AMZN", "GOOGL"]
     try:
         with open("data.json") as f:
             cache = json.load(f)
@@ -202,7 +203,7 @@ def retrieve_information(ticker, cache, testing=False):
             stock = get_info(ticker)
             stock_obj = stock[0]
             stock_cache_entry = stock[1]
-        elif has_cache_expired(cache[ticker]['cache_time'],1):
+        elif has_cache_expired(cache[ticker]['cache_time']):
             if testing == False:
                 print("##### GETTING MORE RECENT STOCK INFO FOR {}.....".format(ticker))
             update = True
@@ -218,7 +219,7 @@ def retrieve_information(ticker, cache, testing=False):
     except:
         # IF ERROR WHEN RETRIEVING INFORMATION, RETURN "ERROR" FOR LATER USE
         return "Error"
-    return (stock_obj,stock_cache_entry,update)
+    return (stock_obj, stock_cache_entry,update)
 
 def print_basic(stock_obj):
     # PRINTS OUT BASIC INFORMATION ABOUT STOCK
@@ -239,14 +240,14 @@ def cache_or_db(ticker, stock_obj, stock_cache_entry, cache, update):
             existing = json.load(f)
         existing[ticker] = stock_cache_entry
         with open("data.json", "w") as f:
-            json.dump(existing,f)
+            json.dump(existing, f)
     elif update:
         update_stock(stock_obj)
         with open("data.json") as f:
             existing = json.load(f)
         existing[ticker] = stock_cache_entry
         with open("data.json", "w") as f:
-            json.dump(existing,f)
+            json.dump(existing, f)
 
 def run():
     print("\n")
@@ -282,7 +283,7 @@ def run():
     while ticker != "EXIT":
         with open("data.json") as f:
             cache = json.load(f)
-        stock = retrieve_information(ticker,cache)
+        stock = retrieve_information(ticker, cache)
         if stock != "Error":
             print_basic(stock[0])
             cache_or_db(ticker, stock[0], stock[1], cache, stock[2])

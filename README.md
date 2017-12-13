@@ -20,27 +20,20 @@ contains method that converts the mean analyst rating into a sentiment (Bullish 
 checks if this matched the user input, a consensus method which finds the rating with most analyst support
 (i.e. Buy, Sell, Hold, etc.), and a price_targets method that prints out the 12-month targets in a bullet format.
 
+The two files created as a result of running the program are **stock_info.html**, which is a plotly chart, and **data.json**, which is the cache. The format of the cache is as follows: {ticker: {"name" : , "price" : , "targets" : [] , etc....}}. It ***does not store then entire HTML page*** for each stock as there are three different pages each time, and when many requests are made the cache would be overwhelmingly large. 
+
+
 
 ## Overview of Files
 
-* **SI507F17_finalproject.py**
-  * Contains the code that runs the program loop to make the url requests, construct the Stock() object,
-    and build a dictionary entry to be added to the cache (if needed) for a user-entered ticker.
-* **SI507F17_finalproject_tests.py**
-  * Contains four classes and 16 methods that test the functions, caching, databases, and edge cases
-    (i.e. if a ticker does not exist or if some information like the analyst ratings are unavailable).
-* **visualize.py**
-  * Contains code to construct two plotly bar graph, as well as the additional formatting dictionary
-    (to change colors, add labels/titles, etc.).
-* **database.py**
-  * Contains three functions - one that builds the database tables the first time the program is run,
-    one that inserts a stock's information the first time it is sentiment, one that updated a stock's
-    information if the cache timestamp has expired.
-* **config.py**
-  * Contains the required dbname and an empty user field (for whoever runs the program).
-* **screenshots**
-  * Contains screenshots of every table in the database with the automatically inserted 5 companies, a plotly chart for Amazon,
-    two of the command line - when the program is first run, and then for requests to AAPL (in cache), MSFT (not in cache, makes new request), GELYF (does not have any price targets), and DL (does not have any analyst ratings, so consensus cannot be made)
+* **SI507F17_finalproject.py:** Contains the code that runs the program loop to make the url requests, construct the Stock() object, and build a dictionary entry to be added to the cache (if needed) for a user-entered ticker.
+* **SI507F17_finalproject_tests.py:** Contains four classes and 16 methods that test the functions, caching, databases, and edge cases (i.e. if a ticker does not exist or if some information like the analyst ratings are unavailable).
+* **visualize.py:** Contains code to construct two plotly bar graph, as well as the additional formatting dictionary (to change colors, add labels/titles, etc.).
+* **database.py:** Contains three functions - one that builds the database tables the first time the program is run, one that inserts a stock's information the first time it is sentiment, one that updated a stock's information if the cache timestamp has expired.
+* **config.py:** Contains the required dbname and an empty user field (for whoever runs the program).
+* **screenshots:** Contains screenshots of every table in the database with the automatically inserted 5 companies, a plotly chart for Amazon, two of the command line - when the program is first run, and then for requests to AAPL (in cache), MSFT (not in cache, makes new request), GELYF (does not have any price targets), and DL (does not have any analyst ratings, so consensus is None)
+* **sample_cache.json:** There is no cache with the repository as the program will create and populate one when it is first run. This is a sample cache file, containing the five entries that are automatically run at the beginning.
+* **sample_plotly:** An HTML file that was created for AMZN (Amazon). Plotly charts are created every time with the stock_info.html name, but the user has to choice of displaying it in the browser automatically or not.
 
 ## Installation/Requirements
 
