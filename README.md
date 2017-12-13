@@ -70,10 +70,12 @@ from the command line. You may also run the testing file as *python3 SI507F17_fi
   a browser tab to display the chart or to skip. Each chart displays the 12-month price targets and analyst ratings. An example of the expected final result, labeled "amazon_plotly" may be found in the repository in the screenshots directory. The same file name is used every time plotly is run, so the file is just overwritten each time with a new company.
 6. The user is then prompted to enter another ticker or to exit.
 
-### Tests File and Note:
+### Tests File and Notes:
 SI507F17_finalproject_tests.py can be run by simply typing *pyhton SI507F17_finalproject_tests.py* from the command line.
 Four classes and 16 methods will then be executed (all of which should pass). One important note is that one method tests the contains function, which checks if a sentiment input (Bullish for stocks that are a buy, and Bearish for those that are a sell) is in the stock's analyst ratings. It does this by converting the mean rating (on a scale of 1-5, lower numbers are a buy, while
 higher ones are sell). Because markets change by the day, there is a small change the analysts ratings could change and alter the mean rating, possibly throwing off the test. Just to be sure, I chose a stock that has been a buy for a long time, so this is unlikely.
+
+One test checks if a plotly html page was created. Because the regular program overwrites the "stock_info.html" page every time, the test is designed to create a unique html page (DIS_info.html). This way it knows if the test actually ran the create_visual() function instead of just checking a previously made html file. 
 
 ## Additional Links
 
