@@ -82,12 +82,12 @@ higher ones are sell). Because markets change by the day, there is a small chang
 
 ## Additional Links
 
-### Example Pages Used for BeautifulSoup
+### Example Pages Used for BeautifulSoup:
 * Example CNN Money request: http://money.cnn.com/quote/quote.html?symb=AAPL
 * Example Bloomberg request: https://www.bloomberg.com/quote/AAPL:US
 * Example Reuters request: https://www.reuters.com/finance/stocks/overview/AAPL.OQ
 
-### Links to Package Documentation
+### Links to Package Documentation:
 * Plotly installation: https://plot.ly/python/getting-started/
 * Plotly guide on bar charts: https://plot.ly/python/bar-charts/
 * Plotly guide for subplots (graphing to charts on one page): https://plot.ly/python/subplots/

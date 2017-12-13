@@ -21,20 +21,23 @@ class Stock(object):
         self.dividend = self.dict['dividend']
 
     def __repr__(self):
-        return "The most recent price for {} is ${}".format(self.name,self.price)
+        return "THE MOST RECENT PRICE FOR {} IS ${}".format(self.name,self.price)
 
     # CONVERTS MEAN RATING (SELF.MEAN) INTO A SENTIMENT, CHECKS IF THIS IS EQUAL TO THE ONE
     # THE USER PASSES IN. FOR EXAMPLE, DOES THE STOCK CONTAIN A "BULLISH" SENTIMENT?
     # MEAN RATING UNDER 3 IS CONSIDERED A BUY/BULLISH, AND ABOVE 3 IS SELL/BEARISH
     def __contains__(self,sentiment):
-        if self.mean < 3:
-            feeling = "BULLISH"
+        if self.mean != None:
+            if self.mean < 3:
+                feeling = "BULLISH"
+            else:
+                feeling = "BEARISH"
+            if sentiment.upper() == feeling:
+                return True
+            else:
+                return False
         else:
-            feeling = "BEARISH"
-        if sentiment.upper() == feeling:
-            return "TRUE, THIS STOCK IS {}".format(feeling.upper())
-        else:
-            return "FALSE, SENTIMENT IS {}".format(feeling.upper())
+            return "CANNOT COMPUTE - NO MEAN RATING"
 
     # RETURNS THE RATING WITH THE MOST ANALYSTS
     def consensus(self):
@@ -55,7 +58,7 @@ class Stock(object):
     # RETURNS ALL THE PRICE TARGETS IN A BULLET FORMAT
     def price_targets(self):
         if None in self.targets:
-            return "TARGETS UNAVAILABLE"
+            return "PRICE TARGETS: UNAVAILABLE"
         else:
             return ("PRICE TARGETS:\n * HIGH: ${}\n * LOW: ${}\n * MEDIAN: ${}".format(self.targets[1],
                                                                                        self.targets[2],
@@ -267,11 +270,9 @@ def run():
     print("THE FOLLOWING STOCKS ALREADY EXIST IN THE CACHE AND DATABASE:")
     print(" * AAPL (APPLE)\n * FB (FACEBOOK)\n * XOM (EXXON)\n * AMZN (AMAZON)\n * GOOGL (ALPHABET)\n")
     print("SOME TICKERS THAT ARE NOT CACHED BY ARE KNOWN TO WORK INCLUDE:")
-    print(" * MSFT (MICROSOFT)\n * MCD (MCDONALD'S)\n * DIS (DISNEY)\n * BABA (ALIBABA)\n")
+    print(" * MSFT (MICROSOFT)\n * MCD (MCDONALD'S)\n * DIS (DISNEY)\n * BABA (ALIBABA)")
+    print(" * JPM (JP MORGAN)\n * BAC (BANK OF AMERICA)\n * RDS.A (SHELL)\n * F (FORD)\n")
     print("#####################################################################\n")
-
-    with open("data.json") as f:
-        cache = json.load(f)
 
     # RUNS THE LOOP AS MANY TIMES AS THE USER WISHES
     # HAS THE OPTION OF EITHER AUTOMATICALLY OPENEING A NEW BROWSER TAB TO
@@ -279,13 +280,16 @@ def run():
     ticker = input("##### PLEASE ENTER A TICKER: ").upper()
     ticker = ticker.replace(" ", "")
     while ticker != "EXIT":
+        with open("data.json") as f:
+            cache = json.load(f)
         stock = retrieve_information(ticker,cache)
         if stock != "Error":
             print_basic(stock[0])
             cache_or_db(ticker, stock[0], stock[1], cache, stock[2])
             preference = input("\n##### VISUAL TO OPEN IN BROWSER AUTOMATICALLY? (TYPE YES OR NO): ").upper()
             if preference == "YES":
-                create_visual(stock[0], ticker, False)
+                stock_obj = stock[0]
+                create_visual(stock_obj.name, stock_obj.price, False)
         else:
             print("##### COULD NOT RETRIEVE INFORMATION FOR GIVEN TICKER.")
             ticker = input("\n##### TRY ANOTHER TICKER, OR TYPE 'EXIT' TO EXIT: ").upper()

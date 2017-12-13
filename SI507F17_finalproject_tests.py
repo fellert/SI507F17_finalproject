@@ -3,6 +3,8 @@ import psycopg2
 from visualize import *
 from SI507F17_finalproject import *
 from database import *
+from bs4 import BeautifulSoup
+
 
 # THIS CLASS IS RUN FIRST AND TESTS IF THE BEGIN() METHOD RUNS THE AUTOMATIC
 # SCRIPT TO CREATE 5 STOCK OBJECTS AND CACHE THEM
@@ -77,7 +79,7 @@ class TestClass(unittest.TestCase):
     def test_repr(self):
         name = self.mcd.name
         price = self.mcd.price
-        self.assertEqual(repr(self.mcd), "The most recent price for {} is ${}".format(name,price))
+        self.assertEqual(repr(self.mcd), "THE MOST RECENT PRICE FOR McDonald's Corp IS ${}".format(price))
 
     # TESTS THE TIMESTAMP/EXIRATION METHOD - ALL TIMESTAMPS, WHEN CONVERTING TO DELTA.DAYS
     # SHOULD BE LESS THAN 1
@@ -91,7 +93,7 @@ class TestClass(unittest.TestCase):
 
     # TESTS IF THE CONTAINS METHOD CONVERTS THE MEAN RATING INTO THE CORRECT SENTIMENT
     def test_contains(self):
-        self.assertEqual(self.mcd.__contains__("BULLISH"), "TRUE, THIS STOCK IS BULLISH")
+        self.assertEqual("BULLISH" in self.mcd, True)
 
 
 class TestDatabase(unittest.TestCase):
@@ -162,17 +164,20 @@ class TestUnkown(unittest.TestCase):
 # SEPARATE CLASS TO TEST IF THE CREATE_VISUAL FUNCTION ACTUALLY CREATE AN HTML FILE
 # IT IS ITS OWN CLASS SO THAT THE CREATE_VISUAL FUNCTION IS ONLY RUN ONCE (FOR A SINGLE TEST)
 class TestVisualization(unittest.TestCase):
+    # CREATES A REQUEST, OBJECT, AND VISUALIZATION FOR DISNEY AND
     def setUp(self):
         with open("data.json") as f:
             self.cache = json.load(f)
         self.request = retrieve_information('DIS', self.cache, True)
         self.dis = self.request[0]
-        create_visual(self.dis, 'DIS', True)
-        self.visual = open("stock_info.html")
+        cache_or_db('DIS', self.dis, self.request[1], self.cache, self.request[2])
+        create_visual(self.dis.name, self.dis.price, True)
+        self.visual = open("DIS_info.html")
 
     # TESTS IF THE CREATE_VISUAL FUNCTION ACTUALLY CREATES AN HTML FILE
     def test_visual_file(self):
         self.assertTrue(self.visual.read())
+
 
     def tearDown(self):
         self.visual.close()
