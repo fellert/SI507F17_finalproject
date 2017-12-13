@@ -24,7 +24,7 @@ The two files created as a result of running the program are **stock_info.html**
 
       {ticker: {"name" : , "price" : , "targets" : [] , etc....}}.
 
-It ***does not store then entire HTML page*** for each stock as there are three requests are made for each stock, and when the program is run many times with new companies the cache would be overwhelmingly large.
+It ***does not store then entire HTML page*** for each stock as three requests are made for each stock, and when the program is run many times with new companies the cache would be overwhelmingly large.
 
 
 
