@@ -20,7 +20,11 @@ contains method that converts the mean analyst rating into a sentiment (Bullish 
 checks if this matched the user input, a consensus method which finds the rating with most analyst support
 (i.e. Buy, Sell, Hold, etc.), and a price_targets method that prints out the 12-month targets in a bullet format.
 
-The two files created as a result of running the program are **stock_info.html**, which is a plotly chart, and **data.json**, which is the cache. The format of the cache is as follows: {ticker: {"name" : , "price" : , "targets" : [] , etc....}}. It ***does not store then entire HTML page*** for each stock as there are three different pages each time, and when many requests are made the cache would be overwhelmingly large. 
+The two files created as a result of running the program are **stock_info.html**, which is a plotly chart, and **data.json**, which is the cache. An example cache may be viewed above, but the general format is as follows:
+
+      {ticker: {"name" : , "price" : , "targets" : [] , etc....}}.
+
+It ***does not store then entire HTML page*** for each stock as there are three requests are made for each stock, and when the program is run many times with new companies the cache would be overwhelmingly large.
 
 
 
