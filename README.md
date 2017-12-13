@@ -24,9 +24,7 @@ The two files created as a result of running the program are **stock_info.html**
 
       {ticker: {"name" : , "price" : , "targets" : [] , etc....}}.
 
-It ***does not store then entire HTML page*** for each stock as three requests are made for each stock, and when the program is run many times with new companies the cache would be overwhelmingly large.
-
-
+It ***does not store then entire HTML page*** for each stock as three requests are made for each stock, and when the program is run many times with new companies added to the cache, it will become overwhelmingly large. This way, the pages are scraped and only the important, relevant information that will be reused is cached.
 
 ## Overview of Files
 
@@ -69,10 +67,10 @@ from the command line. You may also run the testing file as *python3 SI507F17_fi
   * If the first two cases, the program will then update the cache and either create a new entry or update the database.
 4. Some basic information about the stock is then printed.
 5. The program will then generate a plotly HTML file "stock_info.html", but the user has a choice as to automatically open
-  a browser tab to display the chart or to skip. Each chart displays the 12-month price targets and analyst ratings. An example of the expected final result, labeled "amazon_plotly" may be found in the repository in the screenshots directory.
+  a browser tab to display the chart or to skip. Each chart displays the 12-month price targets and analyst ratings. An example of the expected final result, labeled "amazon_plotly" may be found in the repository in the screenshots directory. The same file name is used every time plotly is run, so the file is just overwritten each time with a new company.
 6. The user is then prompted to enter another ticker or exit.
 
-### Tests File and Important Note:
+### Tests File and Note:
 SI507F17_finalproject_tests.py can be run by simply typing *pyhton SI507F17_finalproject_tests.py* from the command line.
 Four classes and 16 methods will then be executed (all of which should pass). One important note is that one method tests the contains function, which checks if a sentiment input (Bullish for stocks that are a buy, and Bearish for those that are a sell) is in the stock's analyst ratings. It does this by converting the mean rating (on a scale of 1-5, lower numbers are a buy, while
 higher ones are sell). Because markets change by the day, there is a small change the analysts ratings could change and alter the mean rating, possibly throwing off the test. Just to be sure, I chose a stock that has been a buy for a long time, so this is unlikely.
