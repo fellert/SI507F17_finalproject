@@ -45,7 +45,7 @@ It ***does not store then entire HTML page*** for each stock as three requests a
 * All files are written to run using python 3.6.
 * A PostgreSQL database called **FELLERT_SI507FINAL** needs to be created. The config file
    contains an empty user="" field, which may also be filled out.
-* You can start your postgres database by typing pg_ctl -D /usr/local/var/postgres start
+* You can start your postgres database by typing *pg_ctl -D /usr/local/var/postgres start*
 
 To run the program after installing the required packages, simply type *python3 SI507F17_finalproject.py*
 from the command line. You may also run the testing file as *python3 SI507F17_finalproject_tests.py*.
