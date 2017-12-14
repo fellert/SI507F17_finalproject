@@ -38,7 +38,7 @@ It ***does not store then entire HTML page*** for each stock as three requests a
 ## Installation/Requirements
 
 * Run *pip install -r requirements.txt* to install the required python packages, including
-   Requests, BeautifulSoup, psycopg2, and Plotly.
+   Requests, BeautifulSoup, psycopg2, and Plotly. You can do this from a virtualenv or globally. 
 * Plotly has both online (using and API) and offline modes - this program
    uses the plotly.offline.plot to create graphs of stock data that will open directly in the
    user's browser - there is no need for API keys or secret data.
