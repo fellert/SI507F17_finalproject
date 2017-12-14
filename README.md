@@ -24,13 +24,6 @@ The two files created as a result of running the main program are **stock_info.h
 
 It ***does not store then entire HTML page*** for each stock as three requests are made for each stock, and when the program is run many times with new companies added to the cache, it will become overwhelmingly large. This way, the pages are scraped and only the important, relevant information that will be reused is cached.
 
-Information is entered/updated in a database called FELLERT_SI507FINAL with the following four tables:
-* Companies: the company and stock_id foreign key
-* Info: basic info including price, volume, mean analyst rating, and dividend yield
-* Ratings: analyst ratings for a stock, entered as integers (i.e. # of buys, sells, etc.)
-* Targets: 12-month target prices, entered as floats
-The stock_id is used in each table to tie an info, ratings, or targets entry back to the company name. 
-
 ## Overview of Files
 
 * **SI507F17_finalproject.py:** Contains the code that runs the program loop to make the url requests, construct the Stock() object, and build a dictionary entry to be added to the cache (if needed) for a user-entered ticker.
@@ -81,6 +74,16 @@ Four classes and 16 methods will then be executed (all of which should pass). On
 higher ones are sell). Because markets change by the day, there is a small change the analysts ratings could change and alter the mean rating, possibly throwing off the test. Just to be sure, I chose a stock that has been a buy for a long time, so this is unlikely.
 
 One test checks if a plotly html page was created. Because the regular program overwrites the "stock_info.html" page every time, the test is designed to create a unique html page (DIS_info.html). This way it knows if the test actually ran the create_visual() function instead of just checking a previously made html file.
+
+### Database Overview
+
+Information is entered/updated in a database called FELLERT_SI507FINAL with the following four tables:
+* Companies: the company and stock_id foreign key.
+* Info: basic info including price, volume, mean analyst rating, and dividend yield.
+* Ratings: analyst ratings for a stock, entered as integers (i.e. # of buys, sells, etc.).
+* Targets: 12-month target prices, entered as floats.
+
+The stock_id is used in each table to tie an info, ratings, or targets entry back to the company name.
 
 
 ## Additional Notes and Links
