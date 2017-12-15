@@ -87,12 +87,15 @@ def create_entry(bloom, cnn, reuters):
 
 # RETRIEVES THE DIVIDEND YIELD % USING BLOOMBERG BEAUTIFULSOUP OBJECT
 def find_dividend(soup):
-    dividend_span = soup.find('span', text="Dividend")
-    dividend = dividend_span.find_next('span', class_="fieldValue__2d582aa7").text
-    if dividend == "--":
+    try:
+        dividend_span = soup.find('span', text="Dividend")
+        dividend = dividend_span.find_next('span', class_="fieldValue__2d582aa7").text
+        if dividend == "--":
+            return "None"
+        else:
+            return dividend
+    except:
         return "None"
-    else:
-        return dividend
 
 
 # FINDS PRICE TARGETS USING CNN BEAUTIFULSOUP OBJECT
