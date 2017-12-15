@@ -14,9 +14,7 @@ CNN Money  | 12-month price targets (median, high, low)
 Reuters    | Analyst ratings (buy, outperform, hold, underperform, sell, no opinion)
 
 After pulling information from the BeautifulSoup objects and storing it into a dictionary,
-the program then uses this info to create/instantiate a Stock() object - the main class in the program - including a constructor with basic information, a repr method, a method that finds an approximate annual dividend payout using the dividend yield, a contains method that converts the mean analyst rating into a sentiment (Bullish or Bearish) and
-checks if this matched the user input, a consensus method which finds the rating with most analyst support
-(i.e. Buy, Sell, Hold, etc.), and a price_targets method that prints out the 12-month targets in a bullet format.
+the program then uses this info to create/instantiate a Stock() object - the main class in the program - including a constructor with basic information, a repr method, a method that finds an approximate annual dividend payout using the dividend yield, a contains method that converts the mean analyst rating into a sentiment (Bullish or Bearish) and checks if this matched the user input, a consensus method which finds the rating with most analyst support (i.e. Buy, Sell, Hold, etc.), and a price_targets method that prints out the 12-month targets in a bullet format. **IMPORTANT** When I tested the program the day of the deadline (after taking a few day off), an error occurred when trying to retrieve the dividend information. It looks like Bloomberg may have slightly reorganized their site, but I have since fixed the scraping method.
 
 The two files created as a result of running the main program are **stock_info.html**, which is a plotly chart, and **data.json**, which is the cache. An additional file, **DIS_info.html**, is created by running the tests file (explained below). An example cache may be viewed in the repository, but the general format is as follows:
 
@@ -75,7 +73,7 @@ higher ones are sell). Because markets change by the day, there is a small chang
 
 One test checks if a plotly html page was created. Because the regular program overwrites the "stock_info.html" page every time, the test is designed to create a unique html page (DIS_info.html). This way it knows if the test actually ran the create_visual() function instead of just checking a previously made html file.
 
-**IMPORTANT** Ideally the main program would be run before the test file. I realized the night before the deadline that the test file contained no function to create tables, so if it were run first, several of the tests would fail. I fixed this by adding the create_tables() function in the first setUp() method, and also reorganized the build() function to include a testing parameter. Usually this function would only create a "data.json" file if it did not exist, but now it will create a new cache every time the test file is run, regardless if one already exists. The final **database/cache should have 10 entries** - the five auto-filled (AAPL, GOOGL, FB, AMZN, and XOM), as wells as MCD, BABA, GELYF, DL, and DIS.  
+**IMPORTANT!!!!** Ideally the main program would be run before the test file. I realized the night before the deadline that the test file contained no function to create tables, so if it were run first, several of the tests would fail. I fixed this by adding the create_tables() function in the first setUp() method, and also reorganized the build() function to include a testing parameter. Usually this function would only create a "data.json" file if it did not exist, but now it will create a new cache every time the test file is run, regardless if one already exists. You should now be able move between the files without running into problems. The final **database/cache should have 10 entries** - the five auto-filled (AAPL, GOOGL, FB, AMZN, and XOM), as well as MCD, BABA, GELYF, DL, and DIS.
 
 ### Database Overview
 
