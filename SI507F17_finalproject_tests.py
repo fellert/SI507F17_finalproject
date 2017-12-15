@@ -1,6 +1,5 @@
 import unittest
 import psycopg2
-import os
 from visualize import *
 from SI507F17_finalproject import *
 from database import *
