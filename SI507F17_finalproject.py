@@ -47,12 +47,17 @@ class Stock(object):
             return max(self.ratings, key=self.ratings.get)
 
     # TAKES THE DIVIDEND YIELD AND CALCULATES THE APPROXIMATE ANNUAL DIVIDEND
-    # PAYOUT (YIELD * CURRENT PRICE )
+    # PAYOUT (YIELD * CURRENT PRICE ). THERE IS A TRY, EXCEPT CLAUSE IN CASE
+    # BEAUTIFULSOUP PULLS THE WRONG DATA - I TESTED THIS THE NIGHT BEFORE IT WAS
+    # DUE AND IT APPEARS BLOOMBERG SWITCHED UP SOME OF THEIR SPANS A LITTLE.
     def approx_dividend(self):
-        if self.dividend != "None":
-            div = float(self.dividend.replace("%", ""))
-            return ("${}".format(round(self.price * (div / 100), 2)))
-        else:
+        try:
+            if self.dividend != "None":
+                div = float(self.dividend.replace("%", ""))
+                return ("${}".format(round(self.price * (div / 100), 2)))
+            else:
+                return "None"
+        except:
             return "None"
 
     # RETURNS ALL THE PRICE TARGETS IN A BULLET FORMAT
@@ -82,7 +87,8 @@ def create_entry(bloom, cnn, reuters):
 
 # RETRIEVES THE DIVIDEND YIELD % USING BLOOMBERG BEAUTIFULSOUP OBJECT
 def find_dividend(soup):
-    dividend = soup.find('span', text="Dividend").find_next('span').text
+    dividend_span = soup.find('span', text="Dividend")
+    dividend = dividend_span.find_next('span', class_="fieldValue__2d582aa7").text
     if dividend == "--":
         return "None"
     else:
@@ -174,14 +180,18 @@ def get_info(ticker):
 
 # CHECKS IF CACHE EXISTS. IF NOT CREATE ONE AND RUNS THE PROGRAM FOR 5 STOCKS
 # AUTOMATICALLY ENTERING THE INFORMATION INTO THE CACHE AND DATABASE
-def begin():
+def begin(testing=False):
     auto = ["AAPL", "FB", "XOM", "AMZN", "GOOGL"]
     try:
         with open("data.json") as f:
             cache = json.load(f)
+        first = False
     except:
-        print("\nNO CACHE EXISTS - CREATING ONE WITH THE FOLLOWING ENTRIES...")
-        print("APPLE (AAPL), FACEBOOK (FB), EXXON (XOM), AMAZON (AMZN), GOOGLE (GOOGL)\n")
+        first = True
+    if first or testing:
+        if not testing:
+            print("\nNO CACHE EXISTS - CREATING ONE WITH THE FOLLOWING ENTRIES...")
+            print("APPLE (AAPL), FACEBOOK (FB), EXXON (XOM), AMAZON (AMZN), GOOGLE (GOOGL)\n")
         create_tables()
         with open("data.json", "w") as f:
             entry = {}

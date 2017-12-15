@@ -1,5 +1,6 @@
 import unittest
 import psycopg2
+import os
 from visualize import *
 from SI507F17_finalproject import *
 from database import *
@@ -11,16 +12,14 @@ from bs4 import BeautifulSoup
 class TestAuto(unittest.TestCase):
 
     def setUp(self):
-        begin()
+        # IF THE TEST FILE IS RUN FIRST, IT MUST CREATE TABLES. THIS ALSO WIPES
+        # OUT ALL OLD DATA SO THAT TESTS CAN BE RUN FROM THE VERY BEGINNING
+        create_tables()
+        begin(True)
         self.cache = open("data.json")
 
     def test_cache_exists(self):
         self.assertTrue(json.load(self.cache))
-
-    def test_cache_contents(self):
-        cache_dict = json.load(self.cache)
-        for ticker in ["AAPL", "AMZN", "XOM", "GOOGL", "FB"]:
-            self.assertTrue(ticker in cache_dict.keys())
 
     def tearDown(self):
         self.cache.close()
@@ -40,6 +39,11 @@ class TestClass(unittest.TestCase):
         cache_or_db('MCD', self.mcd, self.request[1], self.cache, self.request[2])
         cache_or_db('GELYF', self.gelyf, self.request2[1], self.cache, self.request2[2])
         cache_or_db('DL', self.dl, self.request3[1], self.cache, self.request3[2])
+
+    # TESTS CACHE CONTENTS FOR THE FIVE COMPANIES THAT WERE AUTO-FILLED
+    def test_cache_contents(self):
+        for ticker in ["AAPL", "AMZN", "XOM", "GOOGL", "FB"]:
+            self.assertTrue(ticker in self.cache.keys())
 
     # TEST STOCK() CONSTRUCTOR - NAME, PRICE, IF THE PRICE/DIVIDEND IS THE RIGHT TYPE
     def test_constructor(self):

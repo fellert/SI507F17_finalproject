@@ -38,7 +38,7 @@ It ***does not store then entire HTML page*** for each stock as three requests a
 ## Installation/Requirements
 
 * Run *pip install -r requirements.txt* to install the required python packages, including
-   Requests, BeautifulSoup, psycopg2, and Plotly. You can do this from a virtualenv or globally. 
+   Requests, BeautifulSoup, psycopg2, and Plotly. You can do this from a virtualenv or globally.
 * Plotly has both online (using and API) and offline modes - this program
    uses the plotly.offline.plot to create graphs of stock data that will open directly in the
    user's browser - there is no need for API keys or secret data.
@@ -75,6 +75,8 @@ higher ones are sell). Because markets change by the day, there is a small chang
 
 One test checks if a plotly html page was created. Because the regular program overwrites the "stock_info.html" page every time, the test is designed to create a unique html page (DIS_info.html). This way it knows if the test actually ran the create_visual() function instead of just checking a previously made html file.
 
+**IMPORTANT** Ideally the main program would be run before the test file. I realized the night before the deadline that the test file contained no function to create tables, so if it were run first, several of the tests would fail. I fixed this by adding the create_tables() function in the first setUp() method, and also reorganized the build() function to include a testing parameter. Usually this function would only create a "data.json" file if it did not exist, but now it will create a new cache every time the test file is run, regardless if one already exists. The final **database/cache should have 10 entries** - the five auto-filled (AAPL, GOOGL, FB, AMZN, and XOM), as wells as MCD, BABA, GELYF, DL, and DIS.  
+
 ### Database Overview
 
 Information is entered/updated in a database called FELLERT_SI507FINAL with the following four tables:
@@ -84,7 +86,6 @@ Information is entered/updated in a database called FELLERT_SI507FINAL with the 
 * Targets: 12-month target prices, entered as floats.
 
 The stock_id is used in each table to tie an info, ratings, or targets entry back to the company name.
-
 
 ## Additional Notes and Links
 
